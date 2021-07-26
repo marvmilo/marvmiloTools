@@ -86,8 +86,10 @@ def loadJson(filename, object = True):
 
 #print command with Script name in front
 class ScriptPrint:
-    def __init__(self, name):
+    def __init__(self, name, block = False):
         self.name = name
+        self.block = block
     def print(self, msg):
-        print(f"[{self.name}]: {msg}")
+        if not self.block:
+            print(f"[{self.name}]: {msg}")
                 

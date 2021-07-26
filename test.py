@@ -1,6 +1,6 @@
 import marvmiloTools as mm
 
-print = mm.ScriptPrint("TEST").print
+print = mm.ScriptPrint("TEST", block = True).print
 
 d = {'a': 1, 'b': {'c': 2}, 'd': ["hi", {'foo': "bar", "dict": {"hello": "world"}}]}
 l = [1, {'a': 2}, ["hi", {'foo': "bar"}]]
