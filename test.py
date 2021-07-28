@@ -9,9 +9,8 @@ l = [1, {'a': 2}, ["hi", {'foo': "bar"}]]
 string = "hello world"
 number = 10.7
 
-settings = mm.loadJson("test.json")
-print(settings.glossary.title)
+settings = mm.json.load("test.json", object = False)
+print(settings)
 
-mm.timer.stop(output = True)
-print(mm.timer.runtime)
+mm.json.save(settings, "test_save.json")
 
