@@ -1,3 +1,5 @@
+import json
+
 class DictObject():
         def __init__(self, instance):
             if not isinstance(instance, dict):
@@ -11,7 +13,7 @@ class DictObject():
                         self.__dict__[key] = toObj(instance[key])
         
         def __str__(self):
-            return "'" + str({k:(v.__str__() if isinstance(v, DictObject) else v) for k,v in self.__dict__.items() if not k.startswith("_")}).replace("\\", "") + "'"
+            return str(self.toDict())
         __repr__ = __str__
         def __iter__(self):
             return self
@@ -50,10 +52,15 @@ class DictObject():
         def copy(self):
             return self.__dict__.copy()
         
+        #convert back to dictionary
         def toDict(self):
             dictionary = {k:v for k,v in self.__dict__.items() if not k.startswith("_")}
             dictionary = {k: (v if not isinstance(v, DictObject) else v.toDict()) for k,v in dictionary.items()}
             return dictionary
+
+        #pretty print Dict
+        def pretty(self):
+            return json.dumps(self.toDict(), indent=4)
 
 #convert dictionary to object
 def toObj(instance):    
