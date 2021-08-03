@@ -5,7 +5,7 @@ class DictObject():
         if not isinstance(instance, dict):
             raise TypeError("No dictionary")
         else:
-            self._current = 0
+            self.__current__ = 0
             for key in instance:
                 if isinstance(instance[key], dict):
                     self.__dict__[key] = DictObject(instance[key])
@@ -19,8 +19,8 @@ class DictObject():
         return self
     def __next__(self):
         try:
-            val = [key for key in list(self.__dict__.keys()) if not key.startswith("_")][self._current]
-            self._current += 1
+            val = [key for key in list(self.__dict__.keys()) if not key.startswith("__")][self.__current__]
+            self.__current__ += 1
             return val
         except IndexError:
             raise StopIteration
@@ -36,11 +36,11 @@ class DictObject():
     def get(self, item):
         return self.__dict__[item]
     def keys(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("_")}.keys()
+        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.keys()
     def values(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("_")}.values()
+        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.values()
     def items(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("_")}.items()
+        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.items()
     def update(self, dictionary):
         self.__dict__.update(dictionary)
     def pop(self, item):
@@ -82,7 +82,7 @@ def toObj(instance):
 #convert back to dictionary
 def toDict(obj):
     if isinstance(obj, DictObject):
-        return {k:toDict(v) for k,v in obj.items() if not k.startswith("_")}
+        return {k:toDict(v) for k,v in obj.items() if not k.startswith("__")}
     elif isinstance(obj, list):
         return [toDict(v) for v in obj]
     else:
