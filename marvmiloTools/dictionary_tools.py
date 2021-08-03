@@ -13,7 +13,7 @@ class DictObject():
                     self.__dict__[key] = toObj(instance[key])
     
     def __str__(self):
-        return "pimmel"+str(self.toDict())
+        return str(self.toDict())
     __repr__ = __str__
     def __iter__(self):
         return self
