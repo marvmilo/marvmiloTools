@@ -10,8 +10,11 @@ string = "hello world"
 number = 10.7
 
 settings = mm.json.load("test.json")
+settings_copy = settings.copy()
+settings_copy.test = "hello world"
+
 print(settings)
-print(settings.pretty())
+print(settings_copy)
 
 mm.json.save(settings, "test_save.json")
 

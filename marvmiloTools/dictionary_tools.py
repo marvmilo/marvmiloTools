@@ -1,4 +1,5 @@
 import json
+import copy
  
 class DictObject():
     def __init__(self, instance):
@@ -19,7 +20,7 @@ class DictObject():
         return self
     def __next__(self):
         try:
-            val = [key for key in list(self.__dict__.keys()) if not key.startswith("__")][self.__current__]
+            val = [key for key in list(self.__dict__.keys()) if not key == "__current__"][self.__current__]
             self.__current__ += 1
             return val
         except IndexError:
@@ -36,11 +37,11 @@ class DictObject():
     def get(self, item):
         return self.__dict__[item]
     def keys(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.keys()
+        return {k:v for k,v in self.__dict__.items() if not k == "__current__"}.keys()
     def values(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.values()
+        return {k:v for k,v in self.__dict__.items() if not k == "__current__"}.values()
     def items(self):
-        return {k:v for k,v in self.__dict__.items() if not k.startswith("__")}.items()
+        return {k:v for k,v in self.__dict__.items() if not k == "__current__"}.items()
     def update(self, dictionary):
         self.__dict__.update(dictionary)
     def pop(self, item):
@@ -50,7 +51,7 @@ class DictObject():
     def clear(self):
         self.__dict__.clear()
     def copy(self):
-        return self.__dict__.copy()
+        return copy.copy(self)
  
     #pretty print Dict
     def pretty(self):
@@ -82,7 +83,7 @@ def toObj(instance):
 #convert back to dictionary
 def toDict(obj):
     if isinstance(obj, DictObject):
-        return {k:toDict(v) for k,v in obj.items() if not k.startswith("__")}
+        return {k:toDict(v) for k,v in obj.items() if not k == "__current__"}
     elif isinstance(obj, list):
         return [toDict(v) for v in obj]
     else:
