@@ -1,6 +1,7 @@
 import os
 import json as j
 import datetime as dt
+import pandas as pd
 import copy
 
 #load other scripts
@@ -8,7 +9,7 @@ from . import dash_tools as dash
 from . import json_tools as json
 from . import dictionary_tools as dictionary
 
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 
 #print command with Script name in front
 class ScriptPrint:
@@ -72,4 +73,7 @@ timer = Timer()
 
 #for getting variable name as string
 def get_variable_name(var, namespace):
-    return [k for k, v in namespace.items() if v == var][0]
+    if not isinstance(var, pd.DataFrame):
+        return [k for k, v in namespace.items() if v == var][0]
+    else:
+        return [k for k, v in namespace.items() if var.equals(v)][0]
