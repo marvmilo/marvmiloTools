@@ -2,7 +2,7 @@ import marvmiloTools as mm
 
 mm.timer.start()
 
-print = mm.ScriptPrint("TEST").print
+print = mm.ScriptPrint("TEST", block = False).print
 
 d = {'a': 1, 'b': {'c': 2}, 'd': ["hi", {'foo': "bar", "dict": {"hello": "world"}}]}
 l = [1, {'a': 2}, ["hi", {'foo': "bar"}]]
@@ -15,6 +15,9 @@ settings_copy.test = "hello world"
 
 print(settings)
 print(settings_copy)
+
+print(mm.get_variable_name(settings, locals()))
+print(mm.__version__)
 
 mm.json.save(settings, "test_save.json")
 

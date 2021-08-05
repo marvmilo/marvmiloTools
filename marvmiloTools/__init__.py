@@ -8,6 +8,8 @@ from . import dash_tools as dash
 from . import json_tools as json
 from . import dictionary_tools as dictionary
 
+__version__ = "1.4.0"
+
 #print command with Script name in front
 class ScriptPrint:
     def __init__(self, name, block = False):
@@ -66,4 +68,8 @@ class Timer:
             return self.lapruntime
     def reset(self):
         self.__init__()
-timer = Timer()                    
+timer = Timer()
+
+#for getting variable name as string
+def get_variable_name(var, namespace):
+    return [k for k, v in namespace.items() if v == var][0]
