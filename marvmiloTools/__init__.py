@@ -15,7 +15,7 @@ class ScriptPrint:
         self.name = name
         self.block = block
         self.log = log
-        self.logfile = "print.log"
+        self.logfile = "output.log"
         self.logrange = dt.timedelta(days = 1)
         self.logtimeformat = "%d_%m_%Y %H:%M:%S.%f"
     def print(self, msg):
