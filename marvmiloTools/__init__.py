@@ -9,7 +9,7 @@ from . import dash_tools as dash
 from . import json_tools as json
 from . import dictionary_tools as dictionary
 
-__version__ = "1.4.1"
+__version__ = "1.5.1"
 
 #print command with Script name in front
 class ScriptPrint:
