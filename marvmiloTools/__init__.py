@@ -1,6 +1,8 @@
 import datetime as dt
 import pandas as pd
 import numpy as np
+import threading
+import time
 
 #load other scripts
 from . import dash_tools as dash
@@ -18,30 +20,42 @@ class ScriptPrint:
         self.logfile = "output.log"
         self.logrange = dt.timedelta(days = 1)
         self.logtimeformat = "%d_%m_%Y %H:%M:%S.%f"
+        self.__logwriting__ = False
     def print(self, msg):
-        if self.log:
-            try:
-                with open(self.logfile, "r") as rd:
-                    logmsg = str(msg).replace('\n', ' ')
-                    loglines = np.array([l for l in rd.read().split("\n") if not l == ""])
-                    del_logs = list()
-                    for i,l in enumerate(loglines):
-                        try:
-                            logtime = dt.datetime.strptime(l.split(" -> ")[0], self.logtimeformat)
-                            if logtime < dt.datetime.now() - self.logrange:
-                                print(logtime)
-                                del_logs.append(i)
-                        except:
-                            del_logs.append(i)
-                    loglines = np.delete(loglines, del_logs)
-                    loglines = np.append(loglines, f"{dt.datetime.now().strftime(self.logtimeformat)} -> [{self.name}]: {logmsg}")
-                with open(self.logfile, "w") as wd:
-                    wd.write("\n".join(loglines))
-            except FileNotFoundError:
-                open(self.logfile, "w")
-                self.print(msg)
         if not self.block:
             print(f"[{self.name}]: {msg}")
+        if self.log:
+            log_thread = threading.Thread(target = self.__log__thread__, args = (msg, dt.datetime.now(), ))
+            log_thread.start()
+    def __log__thread__(self, msg, logtime):
+        while True:
+            if not self.__logwriting__:
+                self.__logwriting__ = True
+                try:
+                    with open(self.logfile, "r") as rd:
+                        logmsg = str(msg).replace('\n', ' ')
+                        loglines = np.array([l for l in rd.read().split("\n") if not l == ""])
+                        del_logs = list()
+                        for i,l in enumerate(loglines):
+                            try:
+                                logtime = dt.datetime.strptime(l.split(" -> ")[0], self.logtimeformat)
+                                if logtime < logtime - self.logrange:
+                                    print(logtime)
+                                    del_logs.append(i)
+                            except:
+                                del_logs.append(i)
+                        loglines = np.delete(loglines, del_logs)
+                        loglines = np.append(loglines, f"{logtime.strftime(self.logtimeformat)} -> [{self.name}]: {logmsg}")
+                    with open(self.logfile, "w") as wd:
+                        wd.write("\n".join(loglines))
+                except FileNotFoundError:
+                    open(self.logfile, "w")
+                    self.print(msg)
+                self.__logwriting__ = False
+                break
+            else:
+                time.sleep(0.1)
+            
             
 #Timer for Script runtimes
 class Timer:
