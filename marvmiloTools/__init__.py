@@ -1,8 +1,6 @@
-import os
-import json as j
 import datetime as dt
 import pandas as pd
-import copy
+import numpy as np
 
 #load other scripts
 from . import dash_tools as dash
@@ -13,10 +11,35 @@ __version__ = "1.4.1"
 
 #print command with Script name in front
 class ScriptPrint:
-    def __init__(self, name, block = False):
+    def __init__(self, name, block = False, log = False):
         self.name = name
         self.block = block
+        self.log = log
+        self.logfile = "print.log"
+        self.logrange = dt.timedelta(days = 1)
+        self.logtimeformat = "%d_%m_%Y %H:%M:%S.%f"
     def print(self, msg):
+        if self.log:
+            try:
+                with open(self.logfile, "r") as rd:
+                    logmsg = str(msg).replace('\n', ' ')
+                    loglines = np.array([l for l in rd.read().split("\n") if not l == ""])
+                    del_logs = list()
+                    for i,l in enumerate(loglines):
+                        try:
+                            logtime = dt.datetime.strptime(l.split(" -> ")[0], self.logtimeformat)
+                            if logtime < dt.datetime.now() - self.logrange:
+                                print(logtime)
+                                del_logs.append(i)
+                        except:
+                            del_logs.append(i)
+                    loglines = np.delete(loglines, del_logs)
+                    loglines = np.append(loglines, f"{dt.datetime.now().strftime(self.logtimeformat)} -> [{self.name}]: {logmsg}")
+                with open(self.logfile, "w") as wd:
+                    wd.write("\n".join(loglines))
+            except FileNotFoundError:
+                open(self.logfile, "w")
+                self.print(msg)
         if not self.block:
             print(f"[{self.name}]: {msg}")
             

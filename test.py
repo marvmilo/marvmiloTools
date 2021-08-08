@@ -2,8 +2,8 @@ import marvmiloTools as mm
 import pandas as pd
 
 mm.timer.start()
-
-print = mm.ScriptPrint("TEST", block = False).print
+sp = mm.ScriptPrint("TEST", block = False, log = True)
+print = sp.print
 
 d = {'a': 1, 'b': {'c': 2}, 'd': ["hi", {'foo': "bar", "dict": {"hello": "world"}}]}
 l = [1, {'a': 2}, ["hi", {'foo': "bar"}]]
