@@ -53,7 +53,7 @@ class ScriptPrint:
                 with open(self.logfile, "w") as wd:
                     wd.write("\n".join(loglines))
                 self.loglist = {}
-                time.sleep(1)
+                time.sleep(10)
             else:
                 break  
             
