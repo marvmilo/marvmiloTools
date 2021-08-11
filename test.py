@@ -1,5 +1,6 @@
 import marvmiloTools as mm
 import pandas as pd
+import sys
 
 mm.timer.start()
 sp = mm.ScriptPrint("TEST", block = False, log = True)
@@ -22,4 +23,4 @@ print(mm.get_variable_name(df, locals()))
 print(mm.__version__)
 
 mm.json.save(settings, "test_save.json")
-
+sp.finish()
