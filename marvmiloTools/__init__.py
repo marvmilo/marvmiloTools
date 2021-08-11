@@ -10,7 +10,7 @@ from . import dash_tools as dash
 from . import json_tools as json
 from . import dictionary_tools as dictionary
 
-__version__ = "1.5.2"
+__version__ = "1.5.3"
 
 #print command with Script name in front
 class ScriptPrint:
@@ -48,6 +48,7 @@ class ScriptPrint:
                             except:
                                 del_logs.append(i)
                         loglines = np.delete(loglines, del_logs)
+                        loglines = np.sort(loglines)
                         loglines = np.append(loglines, f"{logtime.strftime(self.logtimeformat)} -> [{self.name}]: {logmsg}")
                     with open(self.templogfile, "w") as wd:
                         wd.write("\n".join(loglines))
