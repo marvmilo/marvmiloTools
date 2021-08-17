@@ -9,7 +9,8 @@ Replace "print" function, where you can see in which script the print function w
 #### Example 1:
 .  
 ├── first_script.py  
-└── second_script.py 
+└── second_script.py  
+&nbsp;  
 first_script.py:
 ```
 import marvmiloTools as mmt
@@ -109,4 +110,144 @@ print(variable_name, type(variable_name))
 Output:
 ```
 variable <class 'str'>
+```
+&nbsp;
+## 2. Dash
+### 2.1 flex_style
+Dictionary for centering content in dash plotlys html.Div
+#### Example:
+```
+import marvmiloTools as mmt
+import dash_html_components as html
+
+html.Div(
+    children = [
+        "hello world"
+    ],
+    style = mmt.flex_style
+)
+```
+&nbsp;
+## 3. Json
+### 3.1 load
+For opening and loading a json file to dictionary or marvmiloTools.DictObj
+#### Example:
+.  
+├── example.json  
+└── script.py  
+&nbsp;  
+example.json:
+```
+{
+    "hello": "world"
+}
+```
+script.py:
+```
+import marvmiloTools as mmt
+
+dictionary = mmt.json.load("example.json", object=False)
+DictObj = mmt.json.load("example.json")
+
+print("Dictionary:")
+print(dictionary)
+print(type(dictionary))
+print()
+print("DictObject:")
+print(DictObj)
+print(type(DictObj))
+```
+Execute like this:
+```
+~$ python script.py
+```
+Output:
+```
+Dictionary:
+{'hello': 'world'}
+<class 'dict'>
+
+DictObject:
+{'hello': 'world'}
+<class 'marvmiloTools.dictionary_tools.DictObject'>
+``` 
+&nbsp;  
+### 3.1 save
+For saving a dictionary or marvmiloTools.DictObject to a json file.
+#### Example:
+```
+import marvmiloTools as mmt
+
+dictionary = {"hello": "world"}
+DictObj = mmt.dictionary.toObj(dictionary)
+
+#save to json
+mmt.json.save(dictionary, filename = "dictionary.json")
+mmt.json.save(DictObj, filename = "DictObj.json")
+```
+Output as dictionary.json and DictObj.json:
+```
+{
+    "hello": "world"
+}
+```
+&nbsp;  
+## 4. Dictionary
+### 4.1 toObj
+Transforming to a dictionary to a marvmiloTools.DictObject. This Object can be used like a Class in Python
+#### Example:
+```
+# pylint: disable = no-member
+import marvmiloTools as mmt
+
+dictionary = {"hello": "world", "list": ["string", 10, {"a": "b"}]}
+#convert dictionary to Object
+DictObj = mmt.dictionary.toObj(dictionary)
+
+print(type(DictObj))
+print(DictObj)
+print(DictObj.hello)
+print(DictObj.list[2].a)
+```
+(usining "# pylint: disable = no-member" with Visual Studio Code for disabeling "DictObj has no hello member" Error)  
+&nbsp;  
+Output:
+```
+<class 'marvmiloTools.dictionary_tools.DictObject'>
+{'hello': 'world', 'list': ['string', 10, {'a': 'b'}]}
+world
+b
+```
+A DictObject has the same attributes and functions as a dictionary aswell
+One extra function is pretty:
+```
+import marvmiloTools as mmt
+
+DictObj = mmt.dictionary.toObj({"hello": "world"})
+print(DictObj.pretty())
+```
+Output:
+```
+{
+    "hello": "world"
+}
+```
+&nbsp;  
+### 4.2 toDict
+Transforming a marvmiloTools.DictObject back to a standart dictionary.
+#### Example:
+```
+import marvmiloTools as mmt
+
+DictObj = mmt.dictionary.toObj({"hello": "world"})
+
+#convert to dictionary
+dictionary = mmt.dictionary.toDict(DictObj)
+print(dictionary)
+print(type(dictionary))
+```
+Output:
+```
+{'hello': 'world'}
+<class 'dict'>
 ```
