@@ -21,4 +21,6 @@ print(settings_copy)
 print(mm.get_variable_name(df, locals()))
 print(mm.__version__)
 
+mm.json.write("hello", "test.json", ["glossary", "GlossDiv", "GlossList", "val"])
+
 mm.json.save(settings, "test_save.json")

@@ -18,3 +18,20 @@ def save(dictionary, filename):
             wd.write(json.dumps(dictionary.toDict(), indent = 4))
         else:
             wd.write(json.dumps(dictionary, indent = 4))
+
+#write a variable to json
+def write(value, json_file, path):
+    json_content = load(json_file, object=False)
+    current_content = json_content
+    for path_val in path:
+        if not path_val == path[-1]:
+            try:
+                current_content = current_content[path_val]
+            except:
+                raise KeyError("invalid path list")
+        else:
+            if isinstance(path_val, int):
+                current_content.insert(path_val, value)
+            else:
+                current_content[path_val] = value
+    save(json_content, json_file)

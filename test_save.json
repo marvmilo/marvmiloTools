@@ -15,10 +15,12 @@
                         "GlossSeeAlso": [
                             "GML",
                             "XML"
-                        ]
+                        ],
+                        "NewVal": "hello"
                     },
                     "_GlossSee": "markup"
-                }
+                },
+                "val": "hello"
             }
         }
     }

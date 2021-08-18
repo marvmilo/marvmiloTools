@@ -172,7 +172,7 @@ DictObject:
 <class 'marvmiloTools.dictionary_tools.DictObject'>
 ``` 
 &nbsp;  
-### 3.1 save
+### 3.2 save
 For saving a dictionary or marvmiloTools.DictObject to a json file.
 #### Example:
 ```
@@ -189,6 +189,49 @@ Output as dictionary.json and DictObj.json:
 ```
 {
     "hello": "world"
+}
+```
+&nbsp;  
+### 3.3 write
+For writing a value directly to a json file without opening and saving.
+#### Example:
+.  
+├── example.json  
+└── script.py  
+&nbsp;  
+example.json:
+```
+{
+    "dictionary": {
+        "hello": "world"
+    },
+    "list": [
+        "a",
+        "b",
+        "c"
+    ]
+}
+```
+script.py:
+```
+import marvmiloTools as mmt
+
+mmt.json.write("value", "example.json", ["dictionary", "new"])
+mmt.json.write("new", "example.json", ["list", 1])
+```
+Output example.json:
+```
+{
+    "dictionary": {
+        "hello": "world",
+        "new": "value"
+    },
+    "list": [
+        "a",
+        "new",
+        "b",
+        "c"
+    ]
 }
 ```
 &nbsp;  
