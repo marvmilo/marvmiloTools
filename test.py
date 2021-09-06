@@ -13,6 +13,7 @@ number = 10.7
 
 settings = mm.json.load("test.json")
 settings_copy = settings.copy()
+print(type(settings_copy))
 settings_copy.test = "hello world"
 
 print(settings)
