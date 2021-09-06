@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.7.2
+**Version:** 1.7.3
 
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
@@ -125,7 +125,9 @@ html.Div(
     children = [
         "hello world"
     ],
-    style = mmt.flex_style
+    style = mmt.flex_style({
+        "background-color": "black"
+    })
 )
 ```
 &nbsp;
