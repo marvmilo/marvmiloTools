@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'marvmiloTools',         # How you named your package folder (MyLib)
   packages = ['marvmiloTools'],   # Chose the same as "name"
-  version = '1.7.1',      # Start with a small number and increase it with every change you make
+  version = '1.7.2',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'Tools for using on diffrent Platforms',   # Give a short description about your library
   author = 'marvmilo',                   # Type in your name
