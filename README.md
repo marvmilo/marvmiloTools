@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.6.0
+**Version:** 1.7.1
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
 # HowTo:
