@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.7.3
+**Version:** 1.7.4
 
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
@@ -119,16 +119,41 @@ Dictionary for centering content in dash plotlys html.Div
 #### Example:
 ```
 import marvmiloTools as mmt
-import dash_html_components as html
+from dash import html
 
 html.Div(
     children = [
         "hello world"
     ],
-    style = mmt.flex_style({
+    style = mmt.dash.flex_style({
         "background-color": "black"
     })
 )
+```
+&nbsp;
+### 2.2 accent color
+Accent Color for own CSS Script.
+#### Example:
+```
+import marvmiloTools as mmt
+from dash import html
+
+html.Div(
+    children = [
+        "content"
+    ],
+    style = {"background-color": mmt.dash.accent}
+)
+```
+&nbsp;
+### 2.3 mobile_optimazation
+Meta tags for setting app to a mobile optiomized app.
+#### Example:
+```
+import marvmiloTools as mmt
+import dash
+
+app = dash.Dash(__name__, meta_tags = [mmt.dash.mobile_optimization])
 ```
 &nbsp;
 ## 3. Json
