@@ -1,6 +1,11 @@
 # marvmiloTools
 **Version:** 1.7.4
 
+**Dependencies:**
+- pandas
+- dash
+- dash-bootstrap-components
+
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
 # HowTo:
@@ -146,7 +151,7 @@ html.Div(
 )
 ```
 &nbsp;
-### 2.3 mobile_optimazation
+### 2.3 mobile_optimization
 Meta tags for setting app to a mobile optiomized app.
 #### Example:
 ```
@@ -154,6 +159,46 @@ import marvmiloTools as mmt
 import dash
 
 app = dash.Dash(__name__, meta_tags = [mmt.dash.mobile_optimization])
+```
+&nbsp;
+### 2.4 content_div
+For creating a dynamic scalealbe content Div.
+#### Example:
+```
+import marvmiloTools as mmt
+from dash import html
+import dash_bootstrap_components as dbc
+
+app.layout = html.Div(
+    children = [
+        dbc.Navbar(...),
+        mmt.dash.content_div(
+            width = "1000px",
+            padding = "5%",
+            content = [
+                "content"
+            ]
+        )
+    ]
+)
+```
+&nbsp;
+### 2.5 modal_header_close
+Creating an modal header with close button and specific color.
+#### Example:
+```
+import marvmiloTools as mmt
+import dash_bootstrap_components as dbc
+
+dbc.Modal(
+    children = [
+        mmt.dash.modal_header_close(
+            title = "This is the header",
+            close_id = "modal-close" #id of the close button
+        ),
+        dbc.Modal_Body("This is modal body")
+    ]
+)
 ```
 &nbsp;
 ## 3. Json
