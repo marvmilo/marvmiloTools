@@ -1,9 +1,8 @@
 from distutils.core import setup
 
 # read the contents of your README file
-from pathlib import Path
-this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
+with open("README.md", "r", encoding="utf-8") as fh:
+  long_description = fh.read()
 
 setup(
   name = 'marvmiloTools',         # How you named your package folder (MyLib)
@@ -12,7 +11,7 @@ setup(
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'Tools for using on diffrent Platforms',   # Give a short description about your library
   long_description=long_description,
-  long_description_content_type='text/markdown',
+  long_description_content_type="text/markdown",
   author = 'marvmilo',                   # Type in your name
   author_email = 'marvin.milojevic@gmail.com',      # Type in your E-Mail
   url = 'https://github.com/marvmilo/marvmiloTools',   # Provide either the link to your github or to your website
