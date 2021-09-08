@@ -21,6 +21,7 @@ print(settings_copy)
 
 print(mm.get_variable_name(df, locals()))
 print(mm.__version__)
+print("test")
 
 mm.json.write("hello", "test.json", ["glossary", "GlossDiv", "GlossList", "val"])
 
