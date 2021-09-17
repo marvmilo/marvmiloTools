@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.7.6
+**Version:** 1.7.7
 
 **Dependencies:**
 - pandas
@@ -136,22 +136,7 @@ html.Div(
 )
 ```
 &nbsp;
-### 2.2 accent color
-Accent Color for own CSS Script.
-#### Example:
-```
-import marvmiloTools as mmt
-from dash import html
-
-html.Div(
-    children = [
-        "content"
-    ],
-    style = {"background-color": mmt.dash.accent}
-)
-```
-&nbsp;
-### 2.3 mobile_optimization
+### 2.2 mobile_optimization
 Meta tags for setting app to a mobile optiomized app.
 #### Example:
 ```
@@ -161,7 +146,7 @@ import dash
 app = dash.Dash(__name__, meta_tags = [mmt.dash.mobile_optimization])
 ```
 &nbsp;
-### 2.4 content_div
+### 2.3 content_div
 For creating a dynamic scalealbe content Div.
 #### Example:
 ```
@@ -183,7 +168,7 @@ app.layout = html.Div(
 )
 ```
 &nbsp;
-### 2.5 modal_header_close
+### 2.4 modal_header_close
 Creating an modal header with close button and specific color.
 #### Example:
 ```
@@ -200,6 +185,20 @@ dbc.Modal(
     ]
 )
 ```
+&nbsp;
+### 2.5 modal_header_close
+Creating random dash IDs.
+#### Example:
+```
+import marvmiloTools as mmt
+from dash import html
+
+html.Div(
+    children = "Hello World",
+    id = mmt.dash.random_ID(length = 20)
+)
+```
+Output ID: 'MNPhNBfXcpVeHVVxuJeF'
 &nbsp;
 ## 3. Json
 ### 3.1 load

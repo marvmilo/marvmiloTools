@@ -2,9 +2,8 @@ import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
- 
-#accent color for own css
-accent = "#191919"
+import string
+import random
  
 #meta tags for mobile optimization
 mobile_optimization = {"name": "viewport", "content": "width=device-width, initial-scale=1"}
@@ -47,3 +46,7 @@ def modal_header_close(title, close_id , color = None):
         className = "modal-header",
         style = {"background-color": color}
     )
+
+#function for creating random dash id
+def random_ID(length):
+    return "".join(random.choice(string.ascii_letters) for i in range(length))
