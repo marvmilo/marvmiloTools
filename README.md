@@ -99,6 +99,12 @@ Runtime at lap 2: 0:00:01.001231
 Laps: [datetime.timedelta(seconds=1, microseconds=1151), datetime.timedelta(seconds=1, microseconds=1191), datetime.timedelta(seconds=1, microseconds=1231)]
 Current Lap Runtime: 0:00:02.002030
 ```
+Create a new instance of timer:
+```
+timer = mmt.Timer()
+timer.start()
+...
+```
 &nbsp;  
 ### 1.3 get_variable_name
 Converting variable in namespace into an string.
