@@ -4,6 +4,9 @@ from dash import html
 import dash_bootstrap_components as dbc
 import string
 import random
+
+#import other scripts
+from . import browsertime
  
 #meta tags for mobile optimization
 mobile_optimization = {"name": "viewport", "content": "width=device-width, initial-scale=1"}
@@ -15,7 +18,7 @@ def flex_style(additional_dict = dict()):
         "justify-content": "center",
         "align-items": "center"
     }
-    return flex_style_dict | additional_dict
+    return {**flex_style_dict, **additional_dict}
  
 #function for creating content div with specified width
 def content_div(width, padding, children):
@@ -25,7 +28,7 @@ def content_div(width, padding, children):
                 *children,
                 html.Div(style = {"width": width, "width": "100%"})
             ],
-            style = {"max-width": width}
+            style = {"max-width": width, "width": width}
         ),
         style = flex_style({"padding": padding})
     )
