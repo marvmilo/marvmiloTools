@@ -62,8 +62,11 @@ class DictObject():
         return toDict(self)
  
 #convert dictionary to object
-def toObj(instance):    
-    if isinstance(instance, dict):
+def toObj(instance):
+    if isinstance(instance, DictObject):
+        return instance
+    
+    elif isinstance(instance, dict):
         return DictObject(instance)
     
     elif isinstance(instance, str):
