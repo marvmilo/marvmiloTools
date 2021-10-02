@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.8.3
+**Version:** 1.8.4
 
 **Dependencies:**
 - pandas
