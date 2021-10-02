@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.7.8
+**Version:** 1.8.3
 
 **Dependencies:**
 - pandas
@@ -204,7 +204,35 @@ html.Div(
     id = mmt.dash.random_ID(length = 20)
 )
 ```
-Output ID: 'MNPhNBfXcpVeHVVxuJeF'
+Output ID: 'MNPhNBfXcpVeHVVxuJeF' &nbsp
+
+&nbsp;
+### 2.6 browsertime
+Creating a Object in dash html form, wich provides the current clock time of the browser. That means the callbacks can calulate timezone of input.
+
+Add this to your callbacks:
+```
+app.clientside_callback(*mmt.dash.browsertime.clientside_callback_args)
+```
+
+Add this in your html layout of the page: 
+```
+mmt.dash.browsertime.htmlObj()
+```
+Example Callback with browser time:
+```
+from dash.dependencies import Input, Output, State
+import datetime as dt
+
+@app.callback(
+    [Output(...)],
+    [Input(...)],
+    [State("browser-time", "children")]
+)
+def callback(... , browsertime):
+    time_shift_hours = dt.datetime.strptime(local_time, "%H:%M:%S").hour - dt.datetime.utcnow().hour
+```
+
 &nbsp;
 ## 3. Json
 ### 3.1 load
