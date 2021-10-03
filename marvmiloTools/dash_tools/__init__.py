@@ -7,6 +7,7 @@ import random
 
 #import other scripts
 from . import browsertime
+from . import navitem
  
 #meta tags for mobile optimization
 mobile_optimization = {"name": "viewport", "content": "width=device-width, initial-scale=1"}
