@@ -137,6 +137,72 @@ print(mmt.random_ID(10))
 R1DBXY64KH73BPPF7WFT
 ```
 &nbsp;
+### 1.4 random_ID
+CloudMQTT client with multiple functions.
+#### Example:
+```
+import marvmiloTools as mmt
+
+#init cloudMQTT client
+cloudmqtt = mmt.CloudMQTT(
+    client_name = "clientname", 
+    channel = "channel", 
+    qos = 0
+)
+
+#connect to server
+cloudmqtt.connect(
+    user = "user", 
+    pw = "password", 
+    addr = "cloudmqtt.com", 
+    port = 1234
+)
+
+#reconnecting to server if no connection
+if not cloudmqtt.check_connection():
+    cloudmqtt.reconnect()
+
+#on message function
+def on_message(msg, topic):
+    print(f"received message: '{msg}', topic: '{topic}'")
+    
+#binding on_message function to a topic
+cloudmqtt.bind(topic = "hello", function = on_message)
+
+#publishing a message
+cloudmqtt.publish(topic = "hello", message = "world")
+
+#response function
+def on_request(msg, topic):
+    resp = "hello world"
+    print(f"publishing response: {resp}")
+    return(resp)
+
+#binding on_request to request topic
+cloudmqtt.bind_response("demo", on_request)
+
+#request data from server
+resp = (
+    cloudmqtt.request(
+        topic = "demo",
+        message = ".",
+        retry = 5
+    )
+)
+print("got response: " + resp)
+
+#disconnecting form server
+cloudmqtt.disconnect()
+```
+#### Output:
+```
+received message: 'world', topic: 'hello'
+publishing response: hello world
+got response: hello world
+```
+#### MQTT Messages:
+![Messages](./Markdown%20Examples/1.5%20CloudMQTT/messages.png)
+&nbsp;
 ## 2. Dash
 ### 2.1 flex_style
 Dictionary for centering content in dash plotlys html.Div
@@ -246,6 +312,40 @@ import datetime as dt
 )
 def callback(... , browsertime):
     time_shift_hours = dt.datetime.strptime(local_time, "%H:%M:%S").hour - dt.datetime.utcnow().hour
+```
+&nbsp;
+### 2.6 nav
+Simply creating a dash navbar with custom items.
+```
+import marvmiloTools as mmt
+
+mmt.dash.nav.bar(
+    logo = "url(/assets/logo.png)",
+    logo_style = {
+        "width": "3rem", 
+        "height": "3rem",
+        "background-size": "cover",
+    },
+    title = "Navbar Title",
+    title_style = {
+        "width": "15rem",
+        "font-size": "1.5rem"
+    }, 
+    expand = "lg",
+    items = [
+        mmt.dash.nav.item.href(
+            "Link",
+            href = "https://github.com/marvmilo",
+            target = "_blank",
+            size = "lg"
+        ),
+        mmt.dash.nav.item.normal(
+            "Button",
+            id = "button-id",
+            size = "lg"
+        )
+    ]
+)
 ```
 
 &nbsp;

@@ -87,10 +87,9 @@ class CloudMQTT:
         
     #for handling messages
     def on_message(self, client, obj, msg):
-        print(msg)
         for bind in self.bindings:
             if msg.topic.startswith(bind):
-                self.bindings[bind](msg.payload.decode("utf-8"), msg.topic)
+                self.bindings[bind](msg.payload.decode("utf-8"), "/".join(msg.topic.split("/")[1:]))
                 break
     #for conecting to server
     def connect(self, user, pw, addr, port):
@@ -111,7 +110,7 @@ class CloudMQTT:
     #for reconnecting
     def reconnect(self):
         self.disconnect()
-        self.connect()
+        self.connect(self.user, self.pw, self.addr, self.port)
     #check connection
     def check_connection(self):
         try: resp = self.client.is_connected()
@@ -127,30 +126,28 @@ class CloudMQTT:
     def bind_response(self, topic, function):
         def resp_func(msg, topic):
             topic_list = topic.split("/")
-            if topic_list[2] == "req":
-                topic_list[2] = "resp"
-                self.publish("/".join(topic_list[1:]), function(msg, topic))
-        self.bind(topic, resp_func)
+            if topic_list[1] == "req":
+                topic_list[1] = "resp"
+                self.publish("/".join(topic_list), function(msg, topic))
+        self.bind(topic + "/req", resp_func)
     #for unbinding functions
     def unbind(self, topic):
         del self.bindings["/".join([self.channel, topic])]
     #for requesting information
-    def request(self, topic, message = ".", channel = None, retry = 5):
-        if not channel:
-            channel = random_ID()
+    def request(self, topic, message = "request", ID = None, retry = 5):
+        if not ID:
+            ID = random_ID()
         response = None
         def get_resp(msg, topic):
             nonlocal response
             response = msg
-        self.bind("/".join([topic, "resp", channel]), get_resp)
-        self.publish("/".join([topic, "req", channel]), message)
-        i = 0
+        self.bind("/".join([topic, "resp", str(ID)]), get_resp)
+        self.publish("/".join([topic, "req", str(ID)]), message)
+        start = time.time()
         while not response:
-            if i == retry:
+            if time.time()-start > retry:
                 break
-            time.sleep(1)
-            i += 1
-        self.unbind("/".join([topic, "resp", channel]))
+        self.unbind("/".join([topic, "resp", str(ID)]))
         return response    
 cloudmqtt = CloudMQTT()    
 
