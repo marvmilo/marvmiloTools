@@ -1,16 +1,16 @@
 import datetime as dt
 import pandas as pd
-import numpy as np
-import threading
 import time
-import os
+import random
+import string
+import paho.mqtt.client as mqtt
 
 #load other scripts
 from . import dash_tools as dash
 from . import json_tools as json
 from . import dictionary_tools as dictionary
 
-__version__ = "1.8.5"
+__version__ = "1.9.0"
 
 #print command with Script name in front
 class ScriptPrint:
@@ -72,9 +72,95 @@ class Timer:
         self.__init__()
 timer = Timer()
 
+#CloudMQTT connector
+class CloudMQTT:
+    def __init__(self, client_name = "mmt_client", channel = "", qos = 0):
+        self.client_name = client_name
+        self.channel = channel
+        self.qos = qos
+        self.client = None
+        self.bindings = {}
+        self.user = None
+        self.pw = None
+        self.addr = None
+        self.port = None
+        
+    #for handling messages
+    def on_message(self, client, obj, msg):
+        print(msg)
+        for bind in self.bindings:
+            if msg.topic.startswith(bind):
+                self.bindings[bind](msg.payload.decode("utf-8"), msg.topic)
+                break
+    #for conecting to server
+    def connect(self, user, pw, addr, port):
+        self.user = user
+        self.pw = pw
+        self.addr = addr
+        self.port = port
+        self.client = mqtt.Client(self.client_name)
+        self.client.username_pw_set(user, pw)
+        self.client.connect(addr, port)
+        self.client.on_message = self.on_message
+        self.client.subscribe(self.channel + "/#", qos = self.qos)
+        self.client.loop_start()
+    #for disconnecting
+    def disconnect(self):
+        self.client.disconnect()
+        self.client.loop_stop()
+    #for reconnecting
+    def reconnect(self):
+        self.disconnect()
+        self.connect()
+    #check connection
+    def check_connection(self):
+        try: resp = self.client.is_connected()
+        except NameError: resp = False
+        return resp
+    #for publishing on channel
+    def publish(self, topic, message):
+        self.client.publish("/".join([self.channel, topic]), message, qos = self.qos)
+    #for binding function to topic subcription
+    def bind(self, topic, function):
+        self.bindings["/".join([self.channel, topic])] = function
+    #for binding a response function to topic
+    def bind_response(self, topic, function):
+        def resp_func(msg, topic):
+            topic_list = topic.split("/")
+            if topic_list[2] == "req":
+                topic_list[2] = "resp"
+                self.publish("/".join(topic_list[1:]), function(msg, topic))
+        self.bind(topic, resp_func)
+    #for unbinding functions
+    def unbind(self, topic):
+        del self.bindings["/".join([self.channel, topic])]
+    #for requesting information
+    def request(self, topic, message = ".", channel = None, retry = 5):
+        if not channel:
+            channel = random_ID()
+        response = None
+        def get_resp(msg, topic):
+            nonlocal response
+            response = msg
+        self.bind("/".join([topic, "resp", channel]), get_resp)
+        self.publish("/".join([topic, "req", channel]), message)
+        i = 0
+        while not response:
+            if i == retry:
+                break
+            time.sleep(1)
+            i += 1
+        self.unbind("/".join([topic, "resp", channel]))
+        return response    
+cloudmqtt = CloudMQTT()    
+
 #for getting variable name as string
 def get_variable_name(var, namespace):
     if not isinstance(var, pd.DataFrame):
         return [k for k, v in namespace.items() if v == var][0]
     else:
         return [k for k, v in namespace.items() if var.equals(v)][0]
+
+#for generating random ID
+def random_ID(len = 20):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))

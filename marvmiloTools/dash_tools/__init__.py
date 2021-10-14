@@ -7,6 +7,7 @@ import random
 
 #import other scripts
 from . import browsertime
+from . import navitem
  
 #meta tags for mobile optimization
 mobile_optimization = {"name": "viewport", "content": "width=device-width, initial-scale=1"}
@@ -51,5 +52,5 @@ def modal_header_close(title, close_id , color = None):
     )
 
 #function for creating random dash id
-def random_ID(length):
+def random_ID(length = 20):
     return "".join(random.choice(string.ascii_letters) for i in range(length))

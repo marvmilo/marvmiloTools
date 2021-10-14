@@ -90,4 +90,4 @@ def toDict(obj):
     elif isinstance(obj, list):
         return [toDict(v) for v in obj]
     else:
-        return obj
+        return str(obj)

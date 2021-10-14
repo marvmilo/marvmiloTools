@@ -1,10 +1,11 @@
 # marvmiloTools
-**Version:** 1.8.3
+**Version:** 1.9.0
 
 **Dependencies:**
 - pandas
 - dash
 - dash-bootstrap-components
+- paho-mqtt
 
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
@@ -124,6 +125,18 @@ Output:
 variable <class 'str'>
 ```
 &nbsp;
+### 1.4 random_ID
+Creating a random ID of specific length.
+#### Example:
+```
+import marvmiloTools as mmt
+print(mmt.random_ID(10))
+```
+#### Output:
+```
+R1DBXY64KH73BPPF7WFT
+```
+&nbsp;
 ## 2. Dash
 ### 2.1 flex_style
 Dictionary for centering content in dash plotlys html.Div
@@ -185,15 +198,16 @@ dbc.Modal(
     children = [
         mmt.dash.modal_header_close(
             title = "This is the header",
-            close_id = "modal-close" #id of the close button
+            close_id = "modal-close" #id of the close button,
+            color = "#4287f5" #background color of header
         ),
         dbc.Modal_Body("This is modal body")
     ]
 )
 ```
 &nbsp;
-### 2.5 modal_header_close
-Creating random dash IDs.
+### 2.5 random_ID
+Creating random IDs compatible with dash.
 #### Example:
 ```
 import marvmiloTools as mmt
@@ -201,10 +215,11 @@ from dash import html
 
 html.Div(
     children = "Hello World",
-    id = mmt.dash.random_ID(length = 20)
+    id = mmt.dash.random_ID()
 )
 ```
-Output ID: 'MNPhNBfXcpVeHVVxuJeF' &nbsp
+Output ID: 'MNPhNBfXcpVeHVVxuJeF' 
+&nbsp;
 
 &nbsp;
 ### 2.6 browsertime
