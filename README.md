@@ -1,10 +1,11 @@
 # marvmiloTools
-**Version:** 1.8.5
+**Version:** 1.8.6
 
 **Dependencies:**
 - pandas
 - dash
 - dash-bootstrap-components
+- paho-mqtt
 
 # Description:
 A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
