@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output, State
 clientside_callback_args = (
     """
     function(n) {          
-        const local_time_str = new Date().toLocaleTimeString();                   
+        const local_time_str = new Date().toLocaleTimeString('en-GB');                   
         return local_time_str
     }
     """,
