@@ -137,7 +137,7 @@ print(mmt.random_ID(10))
 R1DBXY64KH73BPPF7WFT
 ```
 &nbsp;
-### 1.4 random_ID
+### 1.5 CloudMQTT
 CloudMQTT client with multiple functions.
 #### Example:
 ```
@@ -202,6 +202,24 @@ got response: hello world
 ```
 #### MQTT Messages:
 ![Messages](./Markdown%20Examples/1.5%20CloudMQTT/messages.png)
+&nbsp;
+### 1.6 SQL
+Simple sqlite3 manager.
+#### Example:
+```
+import marvmiloTools as mmt
+
+mmt.sql.connect("database.db")
+mmt.sql.execute("CREATE TABLE IF NOT EXISTS test (a INTEGER, b INTEGER)")
+mmt.sql.execute("INSERT INTO test (a,b) VALUES (0,1)")
+mmt.sql.disconnect()
+
+#new sql instance
+sql = mmt.SQL()
+sql.connect(...
+```
+#### Database:
+![Messages](./Markdown%20Examples/1.6%20SQL/database.png)
 &nbsp;
 ## 2. Dash
 ### 2.1 flex_style

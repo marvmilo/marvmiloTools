@@ -4,6 +4,8 @@ import time
 import random
 import string
 import paho.mqtt.client as mqtt
+import sqlite3
+import threading
 
 #load other scripts
 from . import dash_tools as dash
@@ -161,3 +163,33 @@ def get_variable_name(var, namespace):
 #for generating random ID
 def random_ID(len = 20):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
+
+#SQL tools
+class SQL:
+    def __init__(self):
+        self.connection = None
+        self.cursor = None
+        self.db = None
+        self.commands = []
+    def __exc_cmds___(self):
+        for command in self.commands:
+            self.cursor.execute(command)
+        self.connection.commit()
+        self.commands = []
+    def __update__(self):
+        while self.connection:
+            self.__exc_cmds___()
+            time.sleep(1)
+    def connect(self, db):
+        self.db = db
+        self.connection = sqlite3.connect(self.db, check_same_thread = False)
+        self.cursor = self.connection.cursor()
+        threading.Thread(target = self.__update__).start()
+    def disconnect(self):
+        self.__exc_cmds___()
+        self.connection.close()
+        self.__init__()
+    def execute(self, command):
+        self.commands.append(command)
+sql = SQL()
+        
