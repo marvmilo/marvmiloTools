@@ -29,7 +29,7 @@ def href(text, id = None, href = "/", target = None, color = "secondary", size =
             html.A(
                 dbc.Button(text, color = color, id = id, size = size),
                 href = href,
-                target = None,
+                target = target,
             ),
             html.Div(style = {"width": padding})
         ],
