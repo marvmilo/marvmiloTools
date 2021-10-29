@@ -19,7 +19,7 @@ setup(
   author = 'marvmilo',                   # Type in your name
   author_email = 'marvin.milojevic@gmail.com',      # Type in your E-Mail
   url = 'https://github.com/marvmilo/marvmiloTools',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/marvmilo/marvmiloTools/archive/refs/tags/v1.10.0.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/marvmilo/marvmiloTools/archive/refs/tags/v1.10.1.tar.gz',    # I explain this later on
   keywords = ['Tools'],   # Keywords that define your package best
   install_requires=[
     "pandas",
