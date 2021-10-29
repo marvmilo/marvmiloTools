@@ -9,7 +9,7 @@ def __random__(len = 20):
     return "".join(random.choice(string.ascii_letters) for i in range(20))
 
 #normal button for navbar
-def normal(text, id = None, color = "secondary", size = None):
+def normal(text, id = None, color = "primary", size = None):
     if not id: id = __random__()
     return dbc.NavItem(
         children = [
@@ -21,7 +21,7 @@ def normal(text, id = None, color = "secondary", size = None):
     )
 
 #href button for navbar
-def href(text, id = None, href = "/", target = None, color = "secondary", size = None):
+def href(text, id = None, href = "/", target = None, color = "primary", size = None):
     if not id: id = __random__()
     return dbc.NavItem(
         children = [

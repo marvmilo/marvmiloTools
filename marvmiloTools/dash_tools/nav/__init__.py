@@ -20,7 +20,7 @@ def bar(
     }, 
     href = "/", 
     items = [], 
-    color = "secondary", 
+    color = "primary", 
     dark = True,
     expand = "md"
 ):
