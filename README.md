@@ -364,6 +364,10 @@ mmt.dash.nav.bar(
         )
     ]
 )
+
+@app.callback(*mmt.dash.nav.callback_args)
+def cn(n, is_open):
+    return mmt.dash.nav.callback_function(n, is_open)
 ```
 
 &nbsp;
