@@ -48,7 +48,10 @@ def modal_header_close(title, close_id , color = None):
             )  
         ],
         className = "modal-header",
-        style = {"background-color": color}
+        style = {
+            "background": color,
+            "border-color": color
+        }
     )
 
 #function for creating random dash id

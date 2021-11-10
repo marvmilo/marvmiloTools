@@ -11,6 +11,7 @@ setup(
     'marvmiloTools.dash_tools',
     'marvmiloTools.dash_tools.nav'
   ],
+
   version = '1.10.2',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'Tools for using on diffrent Platforms',   # Give a short description about your library

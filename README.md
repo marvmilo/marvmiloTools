@@ -282,7 +282,7 @@ dbc.Modal(
     children = [
         mmt.dash.modal_header_close(
             title = "This is the header",
-            close_id = "modal-close" #id of the close button,
+            close_id = "modal-close", #id of the close button,
             color = "#4287f5" #background color of header
         ),
         dbc.Modal_Body("This is modal body")
@@ -365,6 +365,10 @@ mmt.dash.nav.bar(
         )
     ]
 )
+
+@app.callback(*mmt.dash.nav.callback_args)
+def cn(n, is_open):
+    return mmt.dash.nav.callback_function(n, is_open)
 ```
 
 &nbsp;
