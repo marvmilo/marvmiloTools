@@ -16,8 +16,8 @@ mobile_optimization = {"name": "viewport", "content": "width=device-width, initi
 def flex_style(additional_dict = dict()):
     flex_style_dict = {
         "display": "flex",
-        "justify-content": "center",
-        "align-items": "center"
+        "justifyContent": "center",
+        "alignItems": "center"
     }
     return {**flex_style_dict, **additional_dict}
  
@@ -29,7 +29,7 @@ def content_div(width, padding, children):
                 *children,
                 html.Div(style = {"width": width, "width": "100%"})
             ],
-            style = {"max-width": width, "width": width}
+            style = {"maxWidth": width, "width": width}
         ),
         style = flex_style({"padding": padding})
     )

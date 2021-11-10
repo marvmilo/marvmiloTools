@@ -11,18 +11,18 @@ def bar(
     logo_style = {
         "width": "3rem", 
         "height": "3rem",
-        "background-size": "cover",
+        "backgroundSize": "cover",
     }, 
     title = "", 
     title_style = {
         "width": "15rem",
-        "font-size": "1.5rem"
-    }, 
+        "fontSize": "1.5rem"
+    },
     href = "/", 
     items = [], 
-    color = "secondary", 
+    color = "primary", 
     dark = True,
-    expand = "md"
+    expand = "lg"
 ):
     return dbc.Navbar(
         children = [
@@ -31,7 +31,7 @@ def bar(
                     children = [
                         html.Div(
                             style = {
-                                "background-image": logo,
+                                "backgroundImage": logo,
                                 **logo_style
                             }
                         ),
@@ -43,9 +43,9 @@ def bar(
                     ],
                     style = {
                         "display": "flex",
-                        "flex-wrap": "nowrap",
-                        "align-items": "center",
-                        "flex-direction": "row",
+                        "flexWrap": "nowrap",
+                        "alignItems": "center",
+                        "flexDirection": "row",
                     }
                 ),
                 href = href,
@@ -54,7 +54,11 @@ def bar(
             dbc.NavbarToggler(
                 id="navbar-toggler", 
                 n_clicks=0,
-                style = {"margin": "0.5rem 1rem"}
+                style = {
+                    "marginTop": "0.5rem",
+                    "marginBottom": "0.5rem",
+                    "marginLeft": "0.5rem"
+                }
             ),
             dbc.Collapse(
                 items, id="navbar-collapse", navbar=True, is_open=False

@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.10.0
+**Version:** 1.10.2
 
 **Dependencies:**
 - pandas
@@ -219,7 +219,7 @@ sql = mmt.SQL()
 sql.connect(...
 ```
 #### Database:
-![Messages](./Markdown%20Examples/1.6%20SQL/database.png)
+![Database](./Markdown%20Examples/1.6%20SQL/database.png)
 &nbsp;
 ## 2. Dash
 ### 2.1 flex_style
@@ -264,7 +264,7 @@ app.layout = html.Div(
             width = "1000px",
             padding = "5%",
             content = [
-                "content"
+                "children"
             ]
         )
     ]
@@ -321,16 +321,17 @@ mmt.dash.browsertime.htmlObj()
 Example Callback with browser time:
 ```
 from dash.dependencies import Input, Output, State
-import datetime as dt
 
 @app.callback(
     [Output(...)],
     [Input(...)],
-    [State("browser-time", "children")]
+    [State("browser-time", "data")]
 )
 def callback(... , browsertime):
-    time_shift_hours = dt.datetime.strptime(local_time, "%H:%M:%S").hour - dt.datetime.utcnow().hour
+    datetime_object = mmt.dash.browsertime.datetime(browsertime)
+    time_shift = mmt.dash.browsertime.time_shift(browsertime)
 ```
+Also datetime objects from browsertime string can be created. Time shift can also be calculated.
 &nbsp;
 ### 2.6 nav
 Simply creating a dash navbar with custom items.
