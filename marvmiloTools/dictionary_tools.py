@@ -24,6 +24,7 @@ class DictObject():
             self.__current__ += 1
             return val
         except IndexError:
+            self.__current__ = 0
             raise StopIteration
     def __len__(self):
         return(len(self.__dict__)-1)
@@ -90,4 +91,4 @@ def toDict(obj):
     elif isinstance(obj, list):
         return [toDict(v) for v in obj]
     else:
-        return str(obj)
+        return obj

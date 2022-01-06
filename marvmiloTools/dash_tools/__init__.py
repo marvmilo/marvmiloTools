@@ -50,10 +50,26 @@ def modal_header_close(title, close_id , color = None):
         className = "modal-header",
         style = {
             "background": color,
-            "border-color": color
+            "borderColor": color
         }
     )
 
 #function for creating random dash id
 def random_ID(length):
     return "".join(random.choice(string.ascii_letters) for i in range(length))
+
+#function for creating picture
+def picture(path, width = "100%", aspect_ratio = "16 / 9", children = [], additional_style = {}):
+    style = {
+        "backgroundImage": f"url(/assets/{path})",
+        "backgroundSize": "cover",
+        "aspectRatio": aspect_ratio,
+        "width": width
+    }
+    
+    style = style | additional_style
+    
+    return html.Div(
+        children = children,
+        style = style
+    )

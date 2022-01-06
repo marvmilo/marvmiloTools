@@ -67,7 +67,12 @@ def bar(
         color = color,
         dark = dark,
         expand = expand,
-        style = {"padding": "1rem 10%"}
+        style =  {
+            "padding": "1rem 10%",
+            "position": "sticky",
+            "top": 0,
+            "zIndex": 100
+        }
     )
 
 #calback:

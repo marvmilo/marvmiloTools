@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.10.2
+**Version:** 1.11.0
 
 **Dependencies:**
 - pandas
@@ -333,7 +333,7 @@ def callback(... , browsertime):
 ```
 Also datetime objects from browsertime string can be created. Time shift can also be calculated.
 &nbsp;
-### 2.6 nav
+### 2.7 nav
 Simply creating a dash navbar with custom items.
 ```
 import marvmiloTools as mmt
@@ -370,6 +370,27 @@ mmt.dash.nav.bar(
 def cn(n, is_open):
     return mmt.dash.nav.callback_function(n, is_open)
 ```
+&nbsp;
+### 2.8 picture
+For displaying images (jpg, png, svg) from assets folder.
+
+Example:
+```
+mmt.dash.picture(
+    path = "pictures/smiley.jpg",
+    width = "20rem",
+    aspect_ratio = "2 / 1",
+    children = ["Hello world!"],
+    additional_style = {"borderRadius": "2rem"}
+)
+```
+ATTENTION! picture must be in assests folder of CWD!
+
+e.g.  
+.  
+└── assets  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── smiley.jpg
+
 
 &nbsp;
 ## 3. Json
