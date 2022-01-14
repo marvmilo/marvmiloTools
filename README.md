@@ -130,7 +130,7 @@ Creating a random ID of specific length.
 #### Example:
 ```
 import marvmiloTools as mmt
-print(mmt.random_ID(10))
+print(mmt.random_ID(20))
 ```
 #### Output:
 ```
@@ -299,7 +299,7 @@ from dash import html
 
 html.Div(
     children = "Hello World",
-    id = mmt.dash.random_ID()
+    id = mmt.dash.random_ID(20)
 )
 ```
 Output ID: 'MNPhNBfXcpVeHVVxuJeF' 
