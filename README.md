@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.11.0
+**Version:** 1.11.1
 
 **Dependencies:**
 - pandas
@@ -44,7 +44,7 @@ Output:
 [IMPORTED]: This is the SECOND script
 ``` 
 &nbsp;  
-Another feature is blocking the output, if running in background. So you don't ned space for logs with endless looping Scripts.
+Another feature is blocking the output, if running in background. So you don't need space for logs with endless looping Scripts.
 #### Example 2:  
 ```
 print = mmt.ScriptPrint("NAME", block = True).print
@@ -220,6 +220,37 @@ sql.connect(...
 ```
 #### Database:
 ![Database](./Markdown%20Examples/1.6%20SQL/database.png)
+&nbsp;
+### 1.7 prettyprint
+Prettyprint lists, dictionaries, DictObjects etc. in json format.
+#### Example:
+```
+import marvmiloTools as mmt
+
+random_list = [1, 2, 3]
+random_dict = {"a": "A", "b": "B"}
+random_dictobj = mmt.dictionary.toObj(random_dict)
+
+mmt.prettyprint(random_list)
+mmt.prettyprint(random_dict)
+mmt.prettyprint(random_dictobj)
+```
+#### Output:
+```
+[
+    1,
+    2,
+    3
+]
+{
+    "a": "A",
+    "b": "B"
+}
+{
+    "a": "A",
+    "b": "B"
+}
+```
 &nbsp;
 ## 2. Dash
 ### 2.1 flex_style

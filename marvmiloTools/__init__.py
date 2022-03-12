@@ -1,3 +1,32 @@
+"""
+# marvmiloTools
+
+Version: 1.11.1
+
+## Dependencies:
+- pandas
+- dash
+- dash-bootstrap-components
+- paho-mqtt
+
+## Description:
+A tool a wrote for myself to have multiple functions and classes avalibale on diffrent servers and devices.
+
+## Subparts:
+- dash
+- json
+- dictionary
+
+## Available Tools:
+- ScriptPrint
+- Timer
+- get_variable_name
+- random_ID
+- CloudMQTT
+- SQL
+- prettyprint
+"""
+
 import datetime as dt
 import pandas as pd
 import time
@@ -6,16 +35,96 @@ import string
 import paho.mqtt.client as mqtt
 import sqlite3
 import threading
+import json as j
 
 #load other scripts
-from . import dash_tools as dash
-from . import json_tools as json
-from . import dictionary_tools as dictionary
+from . import dash_tools as dash_import
+from . import json_tools as json_import
+from . import dictionary_tools as dictionary_import
 
-__version__ = "1.11.0"
+__version__ = "1.11.1"
+
+#dash tools
+dash = dash_import
+"""
+# Dash
+Tools for Dash Plotly
+## Available:
+- flex_style
+- mobile_optimization
+- content_div
+- modal_header_close
+- random_ID
+- browsertime
+- nav
+- picture
+"""
+
+#json tools
+json = json_import
+"""
+# Json
+Tools for editing json files.
+## Available:
+- load
+- save
+- write
+"""
+
+#dictionary tools
+dictionary = dictionary_import
+"""
+# Dictionary
+Tools for editing dictionaries.
+## Available:
+- toObj
+- toDict
+"""
 
 #print command with Script name in front
 class ScriptPrint:
+    """
+# ScriptPrint:
+Replace "print" function, where you can see in which script the print function was executed.
+## Example 1:
+.
+
+├── first_script.py
+
+└── second_script.py  
+
+
+### first_script.py:
+```
+import marvmiloTools as mmt
+print = mmt.ScriptPrint("MAIN").print
+
+print("This is the FIRST script")
+
+import second_script
+```
+### second_script.py:
+```
+import marvmiloTools as mmt
+print = mmt.ScriptPrint("IMPORTED").print
+
+print("This is the SECOND script")
+```
+### Execute like this:
+```
+~$ python first_script.py
+```
+### Output:
+```
+[MAIN]: This is the FIRST script
+[IMPORTED]: This is the SECOND script
+``` 
+### Example 2:  
+Another feature is blocking the output, if running in background. So you don't need space for logs with endless looping Scripts.
+```
+print = mmt.ScriptPrint("NAME", block = True).print
+```
+    """
     def __init__(self, name, block = False):
         self.name = name
         self.block = block
@@ -25,6 +134,64 @@ class ScriptPrint:
             
 #Timer for Script runtimes
 class Timer:
+    """
+# Timer:
+A build in timer for measuring runtimes.
+## Example:
+```
+import marvmiloTools as mmt
+from time import sleep
+
+#start the timer
+mmt.timer.start()
+
+sleep(3)
+
+#pause timer
+runtime = mmt.timer.pause()
+print("Type of runtime: " + str(type(runtime)))
+print("Runtime at pause: " + str(runtime))
+
+#reset timer and get runtime function
+mmt.timer.reset()
+runtime = mmt.timer.get_runtime()
+print("Runtime at reset: " + str(runtime))
+
+#set some laps
+mmt.timer.start()
+for i in range(3):
+    sleep(1)
+    runtime = mmt.timer.set_lap()
+    print("Runtime at lap " + str(i) + ": " + str(runtime))
+
+#get all laps
+laps = mmt.timer.get_laps()
+print("Laps: " + str(laps))
+
+sleep(2)
+
+#get time of current lap without setting a lap
+lap_runtime = mmt.timer.get_lap_runtime()
+print("Current Lap Runtime: " + str(lap_runtime))
+```
+### Output:
+```
+Type of runtime: <class 'datetime.timedelta'>
+Runtime at pause: 0:00:03.003270
+Runtime at reset: 0:00:00
+Runtime at lap 0: 0:00:01.001151
+Runtime at lap 1: 0:00:01.001191
+Runtime at lap 2: 0:00:01.001231
+Laps: [datetime.timedelta(seconds=1, microseconds=1151), datetime.timedelta(seconds=1, microseconds=1191), datetime.timedelta(seconds=1, microseconds=1231)]
+Current Lap Runtime: 0:00:02.002030
+```
+### Create a new instance of timer:
+```
+timer = mmt.Timer()
+timer.start()
+...
+```
+    """
     def __init__(self):
         self.startpoint = None
         self.lapstartpoint = None
@@ -76,6 +243,71 @@ timer = Timer()
 
 #CloudMQTT connector
 class CloudMQTT:
+    """
+# CloudMQTT
+CloudMQTT client with multiple functions.
+## Example:
+```
+import marvmiloTools as mmt
+
+#init cloudMQTT client
+cloudmqtt = mmt.CloudMQTT(
+    client_name = "clientname", 
+    channel = "channel", 
+    qos = 0
+)
+
+#connect to server
+cloudmqtt.connect(
+    user = "user", 
+    pw = "password", 
+    addr = "cloudmqtt.com", 
+    port = 1234
+)
+
+#reconnecting to server if no connection
+if not cloudmqtt.check_connection():
+    cloudmqtt.reconnect()
+
+#on message function
+def on_message(msg, topic):
+    print(f"received message: '{msg}', topic: '{topic}'")
+    
+#binding on_message function to a topic
+cloudmqtt.bind(topic = "hello", function = on_message)
+
+#publishing a message
+cloudmqtt.publish(topic = "hello", message = "world")
+
+#response function
+def on_request(msg, topic):
+    resp = "hello world"
+    print(f"publishing response: {resp}")
+    return(resp)
+
+#binding on_request to request topic
+cloudmqtt.bind_response("demo", on_request)
+
+#request data from server
+resp = (
+    cloudmqtt.request(
+        topic = "demo",
+        message = ".",
+        retry = 5
+    )
+)
+print("got response: " + resp)
+
+#disconnecting form server
+cloudmqtt.disconnect()
+```
+## Output:
+```
+received message: 'world', topic: 'hello'
+publishing response: hello world
+got response: hello world
+```
+    """
     def __init__(self, client_name = "mmt_client", channel = "", qos = 0):
         self.client_name = client_name
         self.channel = channel
@@ -155,6 +387,25 @@ cloudmqtt = CloudMQTT()
 
 #for getting variable name as string
 def get_variable_name(var, namespace):
+    """
+# get_variable_name
+Converting variable in namespace into an string.
+## Example:
+```
+import marvmiloTools as mmt
+
+#declare a variable
+variable = "hello world"
+
+#get name as string from variable
+variable_name = mmt.get_variable_name(variable, locals())
+print(variable_name, type(variable_name))
+```
+### Output:
+```
+variable <class 'str'>
+```
+    """
     if not isinstance(var, pd.DataFrame):
         return [k for k, v in namespace.items() if v == var][0]
     else:
@@ -162,10 +413,40 @@ def get_variable_name(var, namespace):
 
 #for generating random ID
 def random_ID(len = 20):
+    """
+# random_ID
+Creating a random ID of specific length.
+## Example:
+```
+import marvmiloTools as mmt
+print(mmt.random_ID(10))
+```
+## Output:
+```
+R1DBXY64KH73BPPF7WFT
+```
+    """
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
 
 #SQL tools
 class SQL:
+    """
+# SQL
+Simple sqlite3 manager.
+## Example:
+```
+import marvmiloTools as mmt
+
+mmt.sql.connect("database.db")
+mmt.sql.execute("CREATE TABLE IF NOT EXISTS test (a INTEGER, b INTEGER)")
+mmt.sql.execute("INSERT INTO test (a,b) VALUES (0,1)")
+mmt.sql.disconnect()
+
+#new sql instance
+sql = mmt.SQL()
+sql.connect(...
+```
+    """
     def __init__(self):
         self.connection = None
         self.cursor = None
@@ -192,4 +473,40 @@ class SQL:
     def execute(self, command):
         self.commands.append(command)
 sql = SQL()
-        
+
+def prettyprint(obj):
+    """
+# prettyprint
+Prettyprint lists, dictionaries, DictObjects etc. in json format.
+## Example:
+```
+import marvmiloTools as mmt
+
+random_list = [1, 2, 3]
+random_dict = {"a": "A", "b": "B"}
+random_dictobj = mmt.dictionary.toObj(random_dict)
+
+mmt.prettyprint(random_list)
+mmt.prettyprint(random_dict)
+mmt.prettyprint(random_dictobj)
+```
+## Output:
+```
+[
+    1,
+    2,
+    3
+]
+{
+    "a": "A",
+    "b": "B"
+}
+{
+    "a": "A",
+    "b": "B"
+}
+```
+    """
+    if type(obj) == dictionary.DictObject:
+        obj = obj.toDict()
+    print(j.dumps(obj, indent=4))
