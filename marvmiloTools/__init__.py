@@ -1,7 +1,7 @@
 """
 # marvmiloTools
 
-Version: 1.11.1
+Version: 1.11.2
 
 ## Dependencies:
 - pandas
@@ -42,7 +42,7 @@ from . import dash_tools as dash_import
 from . import json_tools as json_import
 from . import dictionary_tools as dictionary_import
 
-__version__ = "1.11.1"
+__version__ = "1.11.2"
 
 #dash tools
 dash = dash_import
