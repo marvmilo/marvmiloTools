@@ -160,7 +160,7 @@ app.layout = html.Div(
     )
  
 #function for creating modal header with close button
-def modal_header_close(title, close_id , color = None):
+def modal_header_close(title, close_id , color = "#222"):
     """
 # modal_header_close
 Creating an modal header with close button and specific color.
@@ -217,43 +217,3 @@ html.Div(
 Output ID: 'MNPhNBfXcpVeHVVxuJeF' 
     """
     return "".join(random.choice(string.ascii_letters) for i in range(length))
-
-#function for creating picture
-def picture(path, width = "100%", aspect_ratio = "16 / 9", children = [], additional_style = {}):
-    """
-# picture
-For displaying images (jpg, png, svg) from assets folder.
-
-## Example:
-```
-mmt.dash.picture(
-    path = "pictures/smiley.jpg",
-    width = "20rem",
-    aspect_ratio = "2 / 1",
-    children = ["Hello world!"],
-    additional_style = {"borderRadius": "2rem"}
-)
-```
-## ATTENTION! picture must be in assests folder of CWD!
-
-e.g. 
- 
-.
- 
-└── assets  
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── smiley.jpg
-    """
-    style = {
-        "backgroundImage": f"url(/assets/{path})",
-        "backgroundSize": "cover",
-        "aspectRatio": aspect_ratio,
-        "width": width
-    }
-    
-    style = style | additional_style
-    
-    return html.Div(
-        children = children,
-        style = style
-    )

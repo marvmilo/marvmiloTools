@@ -1,5 +1,5 @@
 # marvmiloTools
-**Version:** 1.11.2
+**Version:** 1.11.3
 
 **Dependencies:**
 - pandas
@@ -12,42 +12,48 @@ A tool a wrote for myself to have multiple functions and classes avalibale on di
 # HowTo:
 ## 1. Main
 ### 1.1 ScriptPrint:
-Replace "print" function, where you can see in which script the print function was executed.
-#### Example 1:
-.  
-├── first_script.py  
-└── second_script.py  
-&nbsp;  
-first_script.py:
+Logging and Output Tool for different Scipts.
+### Example 1(Printing):
 ```
 import marvmiloTools as mmt
-print = mmt.ScriptPrint("MAIN").print
 
-print("This is the FIRST script")
+output = mmt.Output("SCRIPT")
+print = output.print
 
-import second_script
+print("hello world")
 ```
-second_script.py:
+#### Output:
 ```
-import marvmiloTools as mmt
-print = mmt.ScriptPrint("IMPORTED").print
-
-print("This is the SECOND script")
-```
-Execute like this:
-```
-~$ python first_script.py
-```
-Output:
-```
-[MAIN]: This is the FIRST script
-[IMPORTED]: This is the SECOND script
+2022-04-18 23:53:48.015564 - INFO - [SCRIPT]: hello world
 ``` 
-&nbsp;  
-Another feature is blocking the output, if running in background. So you don't need space for logs with endless looping Scripts.
-#### Example 2:  
+#### Example 2(Logging):  
 ```
-print = mmt.ScriptPrint("NAME", block = True).print
+import marvmiloTools as mmt
+
+output = mmt.Output("SCRIPT", logfile = "output.log")
+#cleanup from last time
+output.cleanup_logfile()
+output.log("logging output")
+
+print = output.print
+print("logging prints")
+
+def main():
+    1 / 0
+
+output.log_python_error(main)
+```
+#### output.log:
+```
+2022-04-18 23:49:41.898101 - INFO - [SCRIPT]: logging output
+2022-04-18 23:49:41.898891 - INFO - [SCRIPT]: logging prints
+2022-04-18 23:49:41.901410 - ERROR - [SCRIPT]: 
+Traceback (most recent call last):
+  File "C:\Users\marvi\OneDrive\Projects\PyPImarvmiloTools\marvmiloTools\__init__.py", line 168, in log_python_error
+    function()
+  File "C:\Users\marvi\OneDrive\Projects\PyPImarvmiloTools\log.py", line 12, in main
+    1 / 0
+ZeroDivisionError: division by zero
 ```
 &nbsp;   
 ### 1.2 Timer:
@@ -251,6 +257,37 @@ mmt.prettyprint(random_dictobj)
     "b": "B"
 }
 ```
+### 1.8 Thread
+For managing Threads
+#### Example:
+```
+import time
+import marvmiloTools as mmt
+
+def function(string):
+    while True:
+        print(string)
+        time.sleep(1)
+
+thread_id = mmt.thread(function, "hello world")
+print(mmt.threads[thread_id].is_alive())
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    for id in mmt.threads:
+        mmt.threads[id].stop()
+```
+#### Output:
+```
+hello world
+True
+hello world
+hello world
+KeyboardInterrupt:
+```
+    """
 &nbsp;
 ## 2. Dash
 ### 2.1 flex_style
@@ -401,28 +438,6 @@ mmt.dash.nav.bar(
 def cn(n, is_open):
     return mmt.dash.nav.callback_function(n, is_open)
 ```
-&nbsp;
-### 2.8 picture
-For displaying images (jpg, png, svg) from assets folder.
-
-Example:
-```
-mmt.dash.picture(
-    path = "pictures/smiley.jpg",
-    width = "20rem",
-    aspect_ratio = "2 / 1",
-    children = ["Hello world!"],
-    additional_style = {"borderRadius": "2rem"}
-)
-```
-ATTENTION! picture must be in assests folder of CWD!
-
-e.g.  
-.  
-└── assets  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── smiley.jpg
-
-
 &nbsp;
 ## 3. Json
 ### 3.1 load

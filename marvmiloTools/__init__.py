@@ -1,7 +1,7 @@
 """
 # marvmiloTools
 
-Version: 1.11.2
+Version: 1.11.3
 
 ## Dependencies:
 - pandas
@@ -35,14 +35,18 @@ import string
 import paho.mqtt.client as mqtt
 import sqlite3
 import threading
+import datetime
+import traceback
+import os
 import json as j
+import sys
 
 #load other scripts
 from . import dash_tools as dash_import
 from . import json_tools as json_import
 from . import dictionary_tools as dictionary_import
 
-__version__ = "1.11.2"
+__version__ = "1.11.3"
 
 #dash tools
 dash = dash_import
@@ -82,55 +86,104 @@ Tools for editing dictionaries.
 """
 
 #print command with Script name in front
-class ScriptPrint:
+class Output:
     """
-# ScriptPrint:
-Replace "print" function, where you can see in which script the print function was executed.
-## Example 1:
-.
-
-├── first_script.py
-
-└── second_script.py  
-
-
-### first_script.py:
+# Output:
+Logging and Output Tool for different Scipts.
+## Example 1(Printing):
 ```
 import marvmiloTools as mmt
-print = mmt.ScriptPrint("MAIN").print
 
-print("This is the FIRST script")
+output = mmt.Output("SCRIPT")
+print = output.print
 
-import second_script
-```
-### second_script.py:
-```
-import marvmiloTools as mmt
-print = mmt.ScriptPrint("IMPORTED").print
-
-print("This is the SECOND script")
-```
-### Execute like this:
-```
-~$ python first_script.py
+print("hello world")
 ```
 ### Output:
 ```
-[MAIN]: This is the FIRST script
-[IMPORTED]: This is the SECOND script
+2022-04-18 23:53:48.015564 - INFO - [SCRIPT]: hello world
 ``` 
-### Example 2:  
-Another feature is blocking the output, if running in background. So you don't need space for logs with endless looping Scripts.
+### Example 2(Logging):  
 ```
-print = mmt.ScriptPrint("NAME", block = True).print
+import marvmiloTools as mmt
+
+output = mmt.Output("SCRIPT", logfile = "output.log")
+#cleanup from last time
+output.cleanup_logfile()
+output.log("logging output")
+
+print = output.print
+print("logging prints")
+
+def main():
+    1 / 0
+
+output.log_python_error(main)
+```
+### output.log:
+```
+2022-04-18 23:49:41.898101 - INFO - [SCRIPT]: logging output
+2022-04-18 23:49:41.898891 - INFO - [SCRIPT]: logging prints
+2022-04-18 23:49:41.901410 - ERROR - [SCRIPT]: 
+Traceback (most recent call last):
+  File "C:Users/user/Projects/marvmiloTools/__init__.py", line 168, in log_python_error
+    function()
+  File "C:Users/user/Projects/log.py", line 12, in main
+    1 / 0
+ZeroDivisionError: division by zero
 ```
     """
-    def __init__(self, name, block = False):
+    def __init__(self, name, block = False, timestamp = True, logfile = None, log_prints = True):
         self.name = name
         self.block = block
-    def print(self, msg):
+        self.timestamp = timestamp
+        self.logfile = logfile
+        self.log_prints = log_prints
+    
+    def __create_msg__(self, msg, loglevel = None):
+        msg = f"[{self.name}]: {msg}"
+        if loglevel:
+            msg = f"{loglevel} - " + msg
+        if self.timestamp:
+            if loglevel:
+                msg = "- " + msg
+            msg = f"{datetime.datetime.now()} " + msg
+        return msg
+        
+    def print(self, msg, loglevel = "INFO"):
         if not self.block:
-            print(f"[{self.name}]: {msg}")
+            edited_msg = self.__create_msg__(msg, loglevel)
+            print(edited_msg)
+            
+            #logging
+            if self.log_prints and self.logfile:
+                self.log(msg)
+           
+    def log(self, msg, level = "INFO"):
+        if not self.block:
+            if self.logfile:
+                msg = self.__create_msg__(msg, loglevel = level)
+                with open(self.logfile, "a") as logfile:
+                    logfile.write(msg + "\n")
+            else:
+                raise ValueError("No logfile given!")
+    
+    def log_python_error(self, function, exit_script = True):
+        try:
+            function()
+        except:
+            tb = traceback.format_exc()
+            msg = "\n" + tb
+            print(tb)
+            self.log(msg , level = "ERROR")
+            if exit_script:
+                exit()
+    
+    def cleanup_logfile(self):
+        if self.logfile:
+            os.remove(self.logfile)
+        else:
+            raise ValueError("No logfile given!")
             
 #Timer for Script runtimes
 class Timer:
@@ -510,3 +563,100 @@ mmt.prettyprint(random_dictobj)
     if type(obj) == dictionary.DictObject:
         obj = obj.toDict()
     print(j.dumps(obj, indent=4))
+
+threads = dictionary.toObj(dict())
+"""
+# Thread
+For managing Threads
+## Example:
+```
+import time
+import marvmiloTools as mmt
+
+def function(string):
+    while True:
+        print(string)
+        time.sleep(1)
+
+thread_id = mmt.thread(function, "hello world")
+print(mmt.threads[thread_id].is_alive())
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    for id in mmt.threads:
+        mmt.threads[id].stop()
+```
+## Output:
+```
+hello world
+True
+hello world
+hello world
+KeyboardInterrupt:
+```
+"""
+def thread(function, *args, **kwargs):
+    """
+# Thread
+For managing Threads
+## Example:
+```
+import time
+import marvmiloTools as mmt
+
+def function(string):
+    while True:
+        print(string)
+        time.sleep(1)
+
+thread_id = mmt.thread(function, "hello world")
+print(mmt.threads[thread_id].is_alive())
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    for id in mmt.threads:
+        mmt.threads[id].stop()
+```
+## Output:
+```
+hello world
+True
+hello world
+hello world
+KeyboardInterrupt:
+```
+    """
+    class Thread(threading.Thread):
+        def __init__(self, *args, **keywords):
+            threading.Thread.__init__(self, *args, **keywords)
+            self.killed = False
+        def start(self):
+            self.__run_backup = self.run
+            self.run = self.__run     
+            threading.Thread.start(self)
+        def __run(self):
+            sys.settrace(self.globaltrace)
+            self.__run_backup()
+            self.run = self.__run_backup
+        def globaltrace(self, frame, why, arg):
+            if why == 'call':
+                return self.localtrace
+            else:
+                return None
+        def localtrace(self, frame, why, arg):
+            if self.killed:
+                if why == 'line':
+                    raise SystemExit()
+            return self.localtrace
+        def stop(self):
+            self.killed = True
+    
+    id = random_ID()
+    thread_obj = Thread(target = function, args = args, kwargs = kwargs)
+    thread_obj.start()
+    threads[id] = thread_obj
+    return id
