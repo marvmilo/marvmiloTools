@@ -285,9 +285,7 @@ hello world
 True
 hello world
 hello world
-KeyboardInterrupt:
 ```
-    """
 &nbsp;
 ## 2. Dash
 ### 2.1 flex_style
